@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Raft_Hack
+namespace Raft_Hack.Utils
 {
     public class ConsoleWriter
     {
@@ -10,6 +10,9 @@ namespace Raft_Hack
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
         private static extern bool AttachConsole(int dwProcessId);
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern bool FreeConsole();
 
         private const int ATTACH_PARENT_PROCESS = -1;
 
@@ -30,5 +33,10 @@ namespace Raft_Hack
             _stdOutWriter.WriteLine(line);
             System.Console.WriteLine(line);
         }
+
+        public void Destroy()
+		{
+            FreeConsole();
+		}
     }
 }

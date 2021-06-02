@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Raft_Hack.Scripts;
 
 namespace Raft_Hack
 {
@@ -21,6 +22,5 @@ namespace Raft_Hack
         {
             GameObject.Destroy(_gameObject);
         }
-        
     }
 }
