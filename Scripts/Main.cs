@@ -53,7 +53,7 @@ namespace Raft_Hack.Scripts
 			GUIStyle style = new GUIStyle();
 			style.fontSize = 20;
 			style.normal.textColor = Color.red;
-			GUI.Label(new Rect(25, 10, 150f, 50f), "GAME INJECTED", style);
+			GUI.Label(new Rect(Screen.width / 2, 10, 150f, 50f), "Raft Hack", style);
 		}
 
 		public void OnDestroy()

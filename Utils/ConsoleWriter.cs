@@ -6,6 +6,7 @@ namespace Raft_Hack.Utils
 {
 	public enum LOG_TYPE
 	{
+		DEFAULT,
 		INFO,
 		WARNING,
 		ERROR
@@ -59,32 +60,32 @@ namespace Raft_Hack.Utils
 			SetStdHandle(STD_OUTPUT_HANDLE, _HANDLE);
 		}
 
-		public void Log(string message)
-		{
-			Console.ForegroundColor = System.ConsoleColor.White;
-			_stdOutWriter.WriteLine(message);
-			Console.WriteLine(message);
-		}
-
-		public void Log(string message, LOG_TYPE MESSAGE_TYPE)
+		public void Log(string message, LOG_TYPE MESSAGE_TYPE = LOG_TYPE.DEFAULT)
 		{
 			switch(MESSAGE_TYPE)
 			{
 				case LOG_TYPE.INFO:
-					Console.ForegroundColor = System.ConsoleColor.Green;
+					Console.ForegroundColor = ConsoleColor.Green;
 					break;
 				case LOG_TYPE.WARNING:
-					Console.ForegroundColor = System.ConsoleColor.Yellow;
+					Console.ForegroundColor = ConsoleColor.Yellow;
 					break;
 				case LOG_TYPE.ERROR:
-					Console.ForegroundColor = System.ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.Red;
+					break;
+				default:
+					Console.ForegroundColor = ConsoleColor.White;
 					break;
 			}
+			LogMessage(message);
+		}
 
+		private void LogMessage(string message)
+		{
 			_stdOutWriter.WriteLine(message);
 			Console.WriteLine(message);
 		}
-		
+
 		// log what called this method, line number, time in format
 		// [TIME] FILE:LINE METHOD
 		public void DebugLog(string message)
