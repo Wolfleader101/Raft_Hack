@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Raft_Hack.Utils
 {
@@ -10,28 +12,42 @@ namespace Raft_Hack.Utils
 	}
 	public class ConsoleWriter
 	{
-		[System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
-		[return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+		[DllImport("kernel32.dll", SetLastError = true)]
+		[return: System.Runtime.InteropServices.MarshalAs(UnmanagedType.Bool)]
 		static extern bool AllocConsole();
 
-		[System.Runtime.InteropServices.DllImport("kernel32.dll")]
+		[DllImport("kernel32.dll")]
 		private static extern bool AttachConsole(int dwProcessId);
 
-		[System.Runtime.InteropServices.DllImport("kernel32.dll")]
+		[DllImport("kernel32.dll")]
 		private static extern bool FreeConsole();
 
+		[DllImport("kernel32.dll", SetLastError = true)]
+		private static extern IntPtr GetStdHandle(int nStdHandle);
+
+		[DllImport("kernel32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		private static extern bool SetStdHandle(int nStdHandle, IntPtr hHandle);
+
 		private const int ATTACH_PARENT_PROCESS = -1;
+		private const int STD_OUTPUT_HANDLE = -11;
 
 		StreamWriter _stdOutWriter;
+		IntPtr _HANDLE;
 
 		public ConsoleWriter()
 		{
+
 			AllocConsole();
-			var stdout = System.Console.OpenStandardOutput();
+			var stdout = Console.OpenStandardOutput();
 			_stdOutWriter = new StreamWriter(stdout);
 			_stdOutWriter.AutoFlush = true;
 
 			AttachConsole(ATTACH_PARENT_PROCESS);
+
+			_HANDLE = GetStdHandle(STD_OUTPUT_HANDLE);
+
+			Log($"HANDLE: {_HANDLE.ToInt32()}", LOG_TYPE.INFO);
 		}
 
 		public void Destroy()
@@ -39,13 +55,15 @@ namespace Raft_Hack.Utils
 			_stdOutWriter.Dispose();
 			_stdOutWriter.Close();
 			FreeConsole();
+
+			SetStdHandle(STD_OUTPUT_HANDLE, _HANDLE);
 		}
 
 		public void Log(string message)
 		{
-			System.Console.ForegroundColor = System.ConsoleColor.White;
+			Console.ForegroundColor = System.ConsoleColor.White;
 			_stdOutWriter.WriteLine(message);
-			System.Console.WriteLine(message);
+			Console.WriteLine(message);
 		}
 
 		public void Log(string message, LOG_TYPE MESSAGE_TYPE)
@@ -53,18 +71,18 @@ namespace Raft_Hack.Utils
 			switch(MESSAGE_TYPE)
 			{
 				case LOG_TYPE.INFO:
-					System.Console.ForegroundColor = System.ConsoleColor.Green;
+					Console.ForegroundColor = System.ConsoleColor.Green;
 					break;
 				case LOG_TYPE.WARNING:
-					System.Console.ForegroundColor = System.ConsoleColor.Yellow;
+					Console.ForegroundColor = System.ConsoleColor.Yellow;
 					break;
 				case LOG_TYPE.ERROR:
-					System.Console.ForegroundColor = System.ConsoleColor.Red;
+					Console.ForegroundColor = System.ConsoleColor.Red;
 					break;
 			}
 
 			_stdOutWriter.WriteLine(message);
-			System.Console.WriteLine(message);
+			Console.WriteLine(message);
 		}
 		
 		// log what called this method, line number, time in format
