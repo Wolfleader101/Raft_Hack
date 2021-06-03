@@ -1,5 +1,6 @@
 ﻿using Raft_Hack.Utils;
 using UnityEngine;
+using System.Collections;
 
 namespace Raft_Hack.Scripts
 {
@@ -8,25 +9,36 @@ namespace Raft_Hack.Scripts
 		private Player m_Player;
 		private PlayerStats m_PlayerStats;
 		private Stat_Health m_PlayerHealth;
+		private SharkESP m_sharkESP;
+
+
 		public static ConsoleWriter _console;
 
-		public void Start()
+
+		private IEnumerator coroutine;
+
+		void Start()
 		{
 			_console = new ConsoleWriter();
 
+			_console.Log("Main Initialized", LOG_TYPE.INFO);
 
-			_console.Log("Cheat Initialized", LOG_TYPE.WARNING);
-			m_Player = FindObjectOfType<Player>();
+			Instantiate(m_sharkESP);
+			
 
-			m_PlayerStats = m_Player?.GetComponent<PlayerStats>();
-			m_PlayerHealth = m_PlayerStats?.stat_health;
+			coroutine = FindPlayer();
+			StartCoroutine(coroutine);
 
-			_console.Log($"Player HP: {m_PlayerStats?.stat_health.Value} \nMax HP: {m_PlayerStats?.stat_health.Max}", LOG_TYPE.INFO);
+			if (m_Player != null)
+			{
+				GetPlayerStats();
+				PrintPlayerStats();
+			}
+
 		}
-		public void Update()
+		void Update()
 		{
-
-			if(Input.GetKeyDown(KeyCode.UpArrow))
+			if(Input.GetKeyDown(KeyCode.UpArrow) && m_Player != null)
 			{
 				IncreaseHealth();
 			}
@@ -37,7 +49,7 @@ namespace Raft_Hack.Scripts
 			}
 		}
 
-		public void OnGUI()
+		void OnGUI()
 		{
 			Drawer.DrawText("Raft Trainer", new Vector2(Screen.width / 2, 10), false, 20, FontStyle.Bold, Color.cyan);
 
@@ -48,6 +60,32 @@ namespace Raft_Hack.Scripts
 		public void OnDestroy()
 		{
 			_console.Destroy();
+		}
+
+		// eventually rewrite this as a module that can be implemented anywhere
+		private IEnumerator FindPlayer()
+		{
+			while (m_Player == null)
+			{
+				m_Player = FindObjectOfType<Player>();
+				yield return new WaitForSeconds(2f);
+				m_Player = FindObjectOfType<Player>();
+			}
+			StopCoroutine(coroutine);
+			_console.Log("Player Object Found", LOG_TYPE.WARNING);
+			GetPlayerStats();
+			PrintPlayerStats();
+
+		}
+
+		private void GetPlayerStats() 
+		{
+			m_PlayerStats = m_Player?.GetComponent<PlayerStats>();
+			m_PlayerHealth = m_PlayerStats?.stat_health;
+		}
+		private void PrintPlayerStats() 
+		{
+			_console.Log($"Player HP: {m_PlayerStats?.stat_health.Value} \nMax HP: {m_PlayerStats?.stat_health.Max}", LOG_TYPE.INFO);
 		}
 
 		private void IncreaseHealth()
