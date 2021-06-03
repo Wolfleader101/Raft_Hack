@@ -59,11 +59,33 @@ namespace Raft_Hack.Utils
 			var size = TextStyle.CalcSize(label);
 			var _pos = centered ? position - size / 2f : position;
 
-			GUI.Label(new Rect(_pos, size), "Raft Hack", TextStyle);
+			GUI.Label(new Rect(_pos, size), label, TextStyle);
 		}
 
-		public static void DrawBox() { }
+		
 
-		public static void DrawLine() { }
+		public static void DrawLine(Vector2 start, Vector2 end, Color? color, int width = 5) 
+		{
+			GUI.depth = 0;
+			Vector2 d = end - start;
+			float a = Mathf.Rad2Deg * Mathf.Atan(d.y / d.x);
+			if (d.x < 0)
+				a += 180;
+
+			int width2 = (int)Mathf.Ceil(width / 2);
+
+			GUIUtility.RotateAroundPivot(a, start);
+			GUI.color = color.GetValueOrDefault(Color.red);
+			GUI.DrawTexture(new Rect(start.x, start.y - width2, d.magnitude, width), Texture2D.whiteTexture, ScaleMode.StretchToFill);
+			GUIUtility.RotateAroundPivot(-a, start);
+		}
+
+		public static void DrawBox(Vector2 point, int height, int width, Color? color) 
+		{
+			DrawLine(point, new Vector2(point.x + width, point.y), color, 2);
+			DrawLine(point, new Vector2(point.x, point.y + height), color, 2);
+			DrawLine(new Vector2(point.x + width, point.y + height), new Vector2(point.x + width, point.y), color, 2);
+			DrawLine(new Vector2(point.x + width, point.y + height), new Vector2(point.x, point.y + height), color, 2);
+		}
 	}
 }

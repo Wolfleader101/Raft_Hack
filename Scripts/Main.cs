@@ -9,10 +9,9 @@ namespace Raft_Hack.Scripts
 		private Player m_Player;
 		private PlayerStats m_PlayerStats;
 		private Stat_Health m_PlayerHealth;
-		private SharkESP m_sharkESP;
+		private AI_StateMachine_Shark _Shark;
 
-
-		public static ConsoleWriter _console;
+		public ConsoleWriter _console;
 
 
 		private IEnumerator coroutine;
@@ -23,24 +22,23 @@ namespace Raft_Hack.Scripts
 
 			_console.Log("Main Initialized", LOG_TYPE.INFO);
 
-			Instantiate(m_sharkESP);
+
+			this.gameObject.AddComponent<SharkESP>();
 			
 
 			coroutine = FindPlayer();
 			StartCoroutine(coroutine);
-
-			if (m_Player != null)
-			{
-				GetPlayerStats();
-				PrintPlayerStats();
-			}
-
 		}
 		void Update()
 		{
 			if(Input.GetKeyDown(KeyCode.UpArrow) && m_Player != null)
 			{
 				IncreaseHealth();
+			}
+
+			if(Input.GetKeyDown(KeyCode.K) && m_Player != null)
+			{
+				KillShark();
 			}
 
 			if (Input.GetKeyDown(KeyCode.Delete))
@@ -92,6 +90,16 @@ namespace Raft_Hack.Scripts
 		{
 			m_PlayerStats.stat_health.Value += 15f;
 			_console.Log($"New Player HP: {m_PlayerStats?.stat_health.Value}", LOG_TYPE.INFO);
+		}
+
+		private void KillShark()
+		{
+			_Shark = FindObjectOfType<AI_StateMachine_Shark>();
+			if (_Shark != null)
+			{
+				Destroy(_Shark);
+				_console.Log($"SHARK HAS BEEN DESTROYED", LOG_TYPE.ERROR);
+			}
 		}
 	}
 }

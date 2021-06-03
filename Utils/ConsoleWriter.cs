@@ -48,7 +48,7 @@ namespace Raft_Hack.Utils
 
 			_HANDLE = GetStdHandle(STD_OUTPUT_HANDLE);
 
-			Log($"HANDLE: {_HANDLE.ToInt32()}", LOG_TYPE.INFO);
+			//Log($"HANDLE: {_HANDLE.ToInt32()}", LOG_TYPE.INFO);
 		}
 
 		public void Destroy()

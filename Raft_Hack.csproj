@@ -60,6 +60,7 @@
     <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scripts\SharkESP.cs" />
     <Compile Include="Utils\ConsoleWriter.cs" />
     <Compile Include="Loader.cs" />
     <Compile Include="Scripts\Main.cs" />
