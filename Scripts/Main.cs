@@ -18,7 +18,7 @@ namespace Raft_Hack.Scripts
 		void Start()
 		{
 
-			Debug.Log("<color=green>Main Initialized</color");
+			Debug.Log("Main Initialized");
 
 			this.gameObject.AddComponent<SharkESP>();
 			

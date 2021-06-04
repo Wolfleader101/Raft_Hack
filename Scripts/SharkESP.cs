@@ -18,7 +18,7 @@ namespace Raft_Hack.Scripts
 
 		void Start()
 		{
-			Debug.Log("<color=green>Shark ESP Initialized</color");
+			Debug.Log("Shark ESP Initialized");
 
 			coroutine = FindShark();
 			StartCoroutine(coroutine);
