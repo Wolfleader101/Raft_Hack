@@ -11,17 +11,14 @@ namespace Raft_Hack.Scripts
 		private Stat_Health m_PlayerHealth;
 		private AI_StateMachine_Shark _Shark;
 
-		public ConsoleWriter _console;
 
 
 		private IEnumerator coroutine;
 
 		void Start()
 		{
-			_console = new ConsoleWriter();
 
-			_console.Log("Main Initialized", LOG_TYPE.INFO);
-
+			Debug.Log("<color=green>Main Initialized</color");
 
 			this.gameObject.AddComponent<SharkESP>();
 			
@@ -43,7 +40,7 @@ namespace Raft_Hack.Scripts
 
 			if (Input.GetKeyDown(KeyCode.Delete))
 			{
-				Loader.Unload();
+				//Loader.Unload();
 			}
 		}
 
@@ -55,11 +52,6 @@ namespace Raft_Hack.Scripts
 			MenuMaker.MakeButton("Increase HP", new Vector2(20, 40), new Vector2(80, 20), IncreaseHealth)
 ;		}
 
-		public void OnDestroy()
-		{
-			_console.Destroy();
-		}
-
 		// eventually rewrite this as a module that can be implemented anywhere
 		private IEnumerator FindPlayer()
 		{
@@ -70,7 +62,7 @@ namespace Raft_Hack.Scripts
 				m_Player = FindObjectOfType<Player>();
 			}
 			StopCoroutine(coroutine);
-			_console.Log("Player Object Found", LOG_TYPE.WARNING);
+			Debug.LogWarning("Player Object Found");
 			GetPlayerStats();
 			PrintPlayerStats();
 
@@ -83,13 +75,13 @@ namespace Raft_Hack.Scripts
 		}
 		private void PrintPlayerStats() 
 		{
-			_console.Log($"Player HP: {m_PlayerStats?.stat_health.Value} \nMax HP: {m_PlayerStats?.stat_health.Max}", LOG_TYPE.INFO);
+			Debug.Log($"Player HP: {m_PlayerStats?.stat_health.Value} \nMax HP: {m_PlayerStats?.stat_health.Max}");
 		}
 
 		private void IncreaseHealth()
 		{
 			m_PlayerStats.stat_health.Value += 15f;
-			_console.Log($"New Player HP: {m_PlayerStats?.stat_health.Value}", LOG_TYPE.INFO);
+			Debug.Log($"New Player HP: {m_PlayerStats?.stat_health.Value}");
 		}
 
 		private void KillShark()
@@ -98,7 +90,7 @@ namespace Raft_Hack.Scripts
 			if (_Shark != null)
 			{
 				Destroy(_Shark);
-				_console.Log($"SHARK HAS BEEN DESTROYED", LOG_TYPE.ERROR);
+				Debug.LogError("SHARK HAS BEEN DESTROYED");
 			}
 		}
 	}

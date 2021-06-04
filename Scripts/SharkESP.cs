@@ -12,17 +12,13 @@ namespace Raft_Hack.Scripts
 	class SharkESP : MonoBehaviour
 	{
 
-		public static ConsoleWriter _console;
-
 		private AI_StateMachine_Shark m_Shark;
 
 		private IEnumerator coroutine;
 
 		void Start()
 		{
-			_console = this.gameObject.GetComponent<Main>()._console;
-
-			_console.Log("Shark ESP Initialized", LOG_TYPE.INFO);
+			Debug.Log("<color=green>Shark ESP Initialized</color");
 
 			coroutine = FindShark();
 			StartCoroutine(coroutine);
@@ -60,7 +56,7 @@ namespace Raft_Hack.Scripts
 				m_Shark = FindObjectOfType<AI_StateMachine_Shark>();
 			}
 			StopCoroutine(coroutine);
-			_console.Log("Shark Object Found", LOG_TYPE.WARNING);
+			Debug.LogWarning("Shark Object Found");
 
 		}
 	}
