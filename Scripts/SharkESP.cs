@@ -30,7 +30,10 @@ namespace Raft_Hack.Scripts
 
 		void Update()
 		{
-
+			if(m_Shark != null)
+			{
+				m_Shark.targetToAttack = null;
+			}
 		}
 
 		void OnGUI()
@@ -39,8 +42,9 @@ namespace Raft_Hack.Scripts
 
 			if (!m_Shark) return;
 
-			var pos = m_Shark.gameObject.transform.position;
+			var pos = m_Shark.transform.position;
 			var worldToScreen = mainCam.WorldToScreenPoint(pos);
+			if (worldToScreen.z < 0) return;
 
 			Drawer.DrawText(m_Shark.gameObject.name, new Vector2(worldToScreen.x, Screen.height - worldToScreen.y + 45), false, 16, Color.green);
 			Drawer.DrawBox(new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), 25, 40, Color.red);
