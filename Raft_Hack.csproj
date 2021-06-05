@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Loader.cs" />
+    <Compile Include="Patches\CheatPatch.cs" />
     <Compile Include="Scripts\SharkHack.cs" />
     <Compile Include="BepInLoader.cs" />
     <Compile Include="Scripts\Main.cs" />
@@ -88,9 +89,7 @@
     <Compile Include="Utils\ObjectFinder.cs" />
     <Compile Include="Utils\Patcher.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Patches\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y $(SolutionDir)\$(OutDir)\$(TargetName)$(TargetExt) "G:\SteamGames\steamapps\common\Raft\BepInEx\plugins"</PostBuildEvent>

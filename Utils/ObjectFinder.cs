@@ -4,34 +4,60 @@ using UnityEngine;
 
 namespace Raft_Hack.Utils
 {
-	class ObjectFinder
+	static class ObjectFinder
 	{
 		private static float timeCache;
 
-		public static Object CacheObject<T>(float curTime, float waitTime) where T : Object
+
+		public static bool HasComponent<T>(this GameObject flag) where T : Component
 		{
-			Object _obj = null;
-
-			if (curTime >= timeCache)
-			{
-				timeCache = curTime + waitTime;
-				_obj = Object.FindObjectOfType<T>();
-			}
-
-			return _obj;
+			return !(flag == null) && flag.GetComponent<T>() != null;
 		}
 
-		public static List<T> CacheObjects<T>(float curTime, float waitTime) where T : Object
+		public static T FindActiveObject<T>() where T : MonoBehaviour
 		{
-			List<T> _obj = null;
-
-			if (curTime >= timeCache)
+			Transform[] array = Resources.FindObjectsOfTypeAll<Transform>();
+			for (int i = 0; i < array.Length; i++)
 			{
-				timeCache = curTime + waitTime;
-				_obj = Object.FindObjectsOfType<T>().ToList();
+				if (array[i].hideFlags == HideFlags.None && array[i].gameObject.HasComponent<T>())
+				{
+					return array[i].GetComponent<T>();
+				}
 			}
-
-			return _obj;
+			return default(T);
 		}
+
+
+		//public static T CacheObject<T>(float curTime, float waitTime) where T : MonoBehaviour
+		//{
+		//	T _obj = default(T);
+
+
+		//	if (curTime >= timeCache)
+		//	{
+		//		timeCache = curTime + waitTime;
+		//		_obj = FindActiveObject<T>();
+		//		if(_obj != null)
+		//		{
+		//			Debug.LogError($"{_obj.GetType()}");
+		//			return _obj;
+		//		}
+		//	}
+
+		//	return _obj;
+		//}
+
+		//public List<T> CacheObjects<T>(float curTime, float waitTime) where T : Object
+		//{
+		//	List<T> _obj = null;
+
+		//	if (curTime >= timeCache)
+		//	{
+		//		timeCache = curTime + waitTime;
+		//		_obj = Object.FindObjectsOfType<T>().ToList();
+		//	}
+
+		//	return _obj;
+		//}
 	}
 }
