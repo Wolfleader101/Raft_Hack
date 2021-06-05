@@ -114,15 +114,6 @@ namespace Raft_Hack.Scripts
 		{
 			return false;
 		}
-
-
-		[HarmonyPrefix]
-		[HarmonyPatch("OnStateChange")]
-		static bool Prefix3()
-		{
-			return false;
-		}
-
 	}
 
 	[HarmonyPatch(typeof(AI_State_Attack_Block_Shark))]
