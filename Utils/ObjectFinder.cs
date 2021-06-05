@@ -6,7 +6,7 @@ namespace Raft_Hack.Utils
 {
 	static class ObjectFinder
 	{
-		private static float timeCache;
+		//private static float timeCache;
 
 
 		public static bool HasComponent<T>(this GameObject flag) where T : Component

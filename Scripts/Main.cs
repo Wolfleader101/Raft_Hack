@@ -80,10 +80,13 @@ namespace Raft_Hack.Scripts
 			m_Player = FindObjectOfType<Player>();
 			yield return new WaitForSeconds(5f);
 			m_Player = FindObjectOfType<Player>();
-			StopCoroutine(findPlayerCoroutine);
-			Debug.LogWarning("Player Object Found");
-			GetPlayerStats();
-			PrintPlayerStats();
+			if(m_Player != null)
+			{
+				StopCoroutine(findPlayerCoroutine);
+				Debug.LogWarning("Player Object Found");
+				GetPlayerStats();
+				PrintPlayerStats();
+			}
 		}
 
 		private void GetPlayerStats()
