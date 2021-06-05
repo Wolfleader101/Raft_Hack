@@ -1,4 +1,5 @@
 ﻿using Raft_Hack.Scripts;
+using Raft_Hack.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,8 @@ namespace Raft_Hack
 			Loader._load.AddComponent<Main>();
 			UnityEngine.Object.DontDestroyOnLoad(Loader._load);
 			Loader.initialized = true;
+
+			Patcher.doPatching();
 		}
 
 		//public static void Unload()

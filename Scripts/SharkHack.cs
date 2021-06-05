@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Raft_Hack.Scripts
 {
-	class SharkESP : MonoBehaviour
+	class SharkHack : MonoBehaviour
 	{
 
 		private AI_StateMachine_Shark m_Shark;
@@ -18,7 +18,7 @@ namespace Raft_Hack.Scripts
 
 		void Start()
 		{
-			Debug.Log("Shark ESP Initialized");
+			Debug.LogError("Shark ESP Initialized");
 
 			coroutine = FindShark();
 			StartCoroutine(coroutine);
@@ -26,13 +26,18 @@ namespace Raft_Hack.Scripts
 
 		void Update()
 		{
-			if(m_Shark != null)
+			if (m_Shark != null)
 			{
 				m_Shark.targetToAttack = null;
 			}
 		}
 
 		void OnGUI()
+		{
+			SharkESP();
+		}
+
+		private void SharkESP()
 		{
 			var mainCam = Camera.main;
 
@@ -42,7 +47,7 @@ namespace Raft_Hack.Scripts
 			var worldToScreen = mainCam.WorldToScreenPoint(pos);
 			if (worldToScreen.z < 0) return;
 
-			Drawer.DrawText(m_Shark.gameObject.name, new Vector2(worldToScreen.x, Screen.height - worldToScreen.y + 45), false, 16, Color.green);
+			Drawer.DrawText(m_Shark.name, new Vector2(worldToScreen.x, Screen.height - worldToScreen.y + 45), false, 16, Color.green);
 			Drawer.DrawBox(new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), 25, 40, Color.red);
 
 		}
