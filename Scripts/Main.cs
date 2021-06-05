@@ -12,12 +12,7 @@ namespace Raft_Hack.Scripts
 		private Stat_Health m_PlayerHealth;
 		private AI_StateMachine_Shark _Shark;
 
-
-
-		private Camera _mainCam;
-
-
-		private IEnumerator findPlayerCoroutine;
+		public Camera mainCam;
 		
 		void Start()
 		{
@@ -27,15 +22,20 @@ namespace Raft_Hack.Scripts
 			this.gameObject.AddComponent<SharkHack>();
 
 
-			_mainCam = Camera.main;
-			
-
-			findPlayerCoroutine = FindPlayer();
-			StartCoroutine(findPlayerCoroutine);
+			mainCam = Camera.main;
 		}
 
 		void Update()
 		{
+			mainCam = (Camera)ObjectFinder.CacheObject<Camera>(Time.time, 5f);
+			m_Player = (Player)ObjectFinder.CacheObject<Player>(Time.time, 5f);
+			if(m_Player != null)
+			{
+				Debug.LogWarning("Player Object Found");
+				GetPlayerStats();
+				PrintPlayerStats();
+			}
+
 			if(Input.GetKeyDown(KeyCode.UpArrow) && m_Player != null)
 			{
 				IncreaseHealth();
@@ -59,27 +59,6 @@ namespace Raft_Hack.Scripts
 			MenuMaker.MakeBox("Raft Trainer", new Vector2(10, 10), new Vector2(100,100));
 			MenuMaker.MakeButton("Increase HP", new Vector2(20, 40), new Vector2(80, 20), IncreaseHealth)
 ;		}
-
-		private void FindCamera()
-		{
-
-		}
-
-		// eventually rewrite this as a module that can be implemented anywhere
-		private IEnumerator FindPlayer()
-		{
-			while (m_Player == null)
-			{
-				m_Player = FindObjectOfType<Player>();
-				yield return new WaitForSeconds(2f);
-				m_Player = FindObjectOfType<Player>();
-			}
-			StopCoroutine(findPlayerCoroutine);
-			Debug.LogWarning("Player Object Found");
-			GetPlayerStats();
-			PrintPlayerStats();
-
-		}
 
 		private void GetPlayerStats() 
 		{
