@@ -12,8 +12,6 @@ namespace Raft_Hack.Scripts
 		private Stat_Health m_PlayerHealth;
 		private AI_StateMachine_Shark _Shark;
 
-		private ObjectFinder _objectFinder;
-
 
 
 		private Camera _mainCam;
@@ -27,9 +25,7 @@ namespace Raft_Hack.Scripts
 			Debug.LogError("Main Initialized");
 
 			this.gameObject.AddComponent<SharkHack>();
-			this.gameObject.AddComponent<ObjectFinder>();
 
-			_objectFinder = this.gameObject.GetComponent<ObjectFinder>();
 
 			_mainCam = Camera.main;
 			

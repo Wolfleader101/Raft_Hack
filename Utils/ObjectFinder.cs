@@ -1,41 +1,37 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Raft_Hack.Utils
 {
-	class ObjectFinder : MonoBehaviour
+	class ObjectFinder
 	{
-		private Object m_Object;
-		private IEnumerator coroutine;
-		public float waitTime = 5f;
+		private static float timeCache;
 
-		public void Initialize(Object obj)
+		public static Object CacheObject<T>(float curTime, float waitTime) where T : Object
 		{
-			m_Object = obj;
-		}
-		public IEnumerator SearchForObjectUntilFound()
-		{
-			coroutine = this.SearchForObjectUntilFound();
-			while (m_Object == null)
+			Object _obj = null;
+
+			if (curTime >= timeCache)
 			{
-				m_Object = FindObjectOfType<AI_StateMachine_Shark>();
-				yield return new WaitForSeconds(waitTime);
-				m_Object = FindObjectOfType<AI_StateMachine_Shark>();
+				timeCache = curTime + waitTime;
+				_obj = Object.FindObjectOfType<T>();
 			}
-			StopCoroutine(coroutine);
-			Debug.LogWarning("Shark Object Found");
+
+			return _obj;
 		}
 
-		public IEnumerator CacheObject()
+		public static List<T> CacheObjects<T>(float curTime, float waitTime) where T : Object
 		{
-			coroutine = this.CacheObject();
-			for (;;)
+			List<T> _obj = null;
+
+			if (curTime >= timeCache)
 			{
-				m_Object = Object.FindObjectOfType<Player>();
-
-				yield return new WaitForSeconds(waitTime);
+				timeCache = curTime + waitTime;
+				_obj = Object.FindObjectsOfType<T>().ToList();
 			}
-		}
 
+			return _obj;
+		}
 	}
 }
