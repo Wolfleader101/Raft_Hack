@@ -1,9 +1,11 @@
 ﻿using HarmonyLib;
+using Raft_Hack.Scripts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Raft_Hack.Patches
 {
@@ -14,7 +16,8 @@ namespace Raft_Hack.Patches
 		[HarmonyPatch("FindBlockToAttack")]
 		static bool Prefix()
 		{
-			return false;
+			if(Loader.Load.GetComponent<SharkHack>().friendlyShark)	return false;
+			return true;
 		}
 	}
 }

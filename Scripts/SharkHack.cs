@@ -13,7 +13,9 @@ namespace Raft_Hack.Scripts
 	{
 
 		private AI_StateMachine_Shark m_Shark;
-		private bool m_FriendlyShark = true;
+
+		private bool _friendlyShark = true;
+		public bool friendlyShark => _friendlyShark;
 
 		private IEnumerator coroutine;
 
@@ -30,7 +32,7 @@ namespace Raft_Hack.Scripts
 		{
 			//m_Shark = (AI_StateMachine_Shark)ObjectFinder.CacheObject<AI_StateMachine_Shark>(Time.time, 5f);
 
-			if (m_Shark != null && m_FriendlyShark)
+			if (m_Shark != null && friendlyShark)
 			{
 				//m_Shark.targetToAttack = null;
 			}
@@ -38,7 +40,7 @@ namespace Raft_Hack.Scripts
 
 		void OnGUI()
 		{
-			MenuMaker.MakeToggle("Friendly Shark", new Vector2(100, 50), new Vector2(20, 70), m_FriendlyShark, out m_FriendlyShark);
+			MenuMaker.MakeToggle("Friendly Shark", new Vector2(100, 50), new Vector2(20, 70), _friendlyShark, out _friendlyShark);
 
 			SharkESP();
 		}
