@@ -33,12 +33,12 @@ namespace Raft_Hack.Scripts
 			//mainCam = (Camera)ObjectFinder.CacheObject<Camera>(Time.time, 5f);
 			//m_Player = (Player)ObjectFinder.CacheObject<Player>(Time.time, 5f);
 
-			if (m_Player != null)
-			{
-				Debug.LogWarning("Player Object Found");
-				GetPlayerStats();
-				PrintPlayerStats();
-			}
+			//if (m_Player != null)
+			//{
+			//	Debug.LogWarning("Player Object Found");
+			//	GetPlayerStats();
+			//	PrintPlayerStats();
+			//}
 
 
 			HandleInput();
@@ -49,8 +49,8 @@ namespace Raft_Hack.Scripts
 		{
 			Drawer.DrawText("Raft Trainer", new Vector2(Screen.width / 2, 10), false, 20, FontStyle.Bold, Color.cyan);
 
-			MenuMaker.MakeBox("Raft Trainer", new Vector2(10, 10), new Vector2(100, 100));
-			MenuMaker.MakeButton("Increase HP", new Vector2(20, 40), new Vector2(80, 20), IncreaseHealth)
+			MenuMaker.MakeBox("Raft Trainer", new Vector2(200, 100), new Vector2(10, 10));
+			MenuMaker.MakeButton("Increase HP", new Vector2(80, 20), new Vector2(20, 40), IncreaseHealth)
 ;
 		}
 
@@ -101,8 +101,11 @@ namespace Raft_Hack.Scripts
 
 		private void IncreaseHealth()
 		{
+			if (m_PlayerStats == null) return;
 			m_PlayerStats.stat_health.Value += 15f;
-			Debug.Log($"New Player HP: {m_PlayerStats?.stat_health.Value}");
+			var msg = $"New Player HP: {m_PlayerStats?.stat_health.Value}";
+			ChatManager.SendDebugChatMessage(msg);
+			Debug.Log(msg);
 		}
 
 		private void KillShark()

@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Loader.cs" />
     <Compile Include="Patches\CheatPatch.cs" />
+    <Compile Include="Patches\SharkPatch.cs" />
     <Compile Include="Scripts\SharkHack.cs" />
     <Compile Include="BepInLoader.cs" />
     <Compile Include="Scripts\Main.cs" />

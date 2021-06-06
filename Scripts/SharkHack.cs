@@ -13,13 +13,14 @@ namespace Raft_Hack.Scripts
 	{
 
 		private AI_StateMachine_Shark m_Shark;
+		private bool m_FriendlyShark = true;
 
 		private IEnumerator coroutine;
 
 
 		void Start()
 		{
-			Debug.LogError("Shark ESP Initialized");
+			Debug.LogError("Shark Hack Initialized");
 
 			coroutine = FindShark();
 			StartCoroutine(coroutine);
@@ -29,14 +30,16 @@ namespace Raft_Hack.Scripts
 		{
 			//m_Shark = (AI_StateMachine_Shark)ObjectFinder.CacheObject<AI_StateMachine_Shark>(Time.time, 5f);
 
-			if (m_Shark != null)
+			if (m_Shark != null && m_FriendlyShark)
 			{
-				m_Shark.targetToAttack = null;
+				//m_Shark.targetToAttack = null;
 			}
 		}
 
 		void OnGUI()
 		{
+			MenuMaker.MakeToggle("Friendly Shark", new Vector2(100, 50), new Vector2(20, 70), m_FriendlyShark, out m_FriendlyShark);
+
 			SharkESP();
 		}
 
