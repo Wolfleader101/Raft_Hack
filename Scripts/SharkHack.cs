@@ -22,8 +22,6 @@ namespace Raft_Hack.Scripts
 
 		void Start()
 		{
-			Debug.LogError("Shark Hack Initialized");
-
 			coroutine = FindShark();
 			StartCoroutine(coroutine);
 		}
@@ -34,7 +32,7 @@ namespace Raft_Hack.Scripts
 
 			if (m_Shark != null && friendlyShark)
 			{
-				//m_Shark.targetToAttack = null;
+				m_Shark.targetToAttack = null;
 			}
 		}
 
@@ -42,7 +40,7 @@ namespace Raft_Hack.Scripts
 		{
 			MenuMaker.MakeToggle("Friendly Shark", new Vector2(100, 50), new Vector2(20, 70), _friendlyShark, out _friendlyShark);
 
-			SharkESP();
+			//SharkESP();
 		}
 
 		private void SharkESP()

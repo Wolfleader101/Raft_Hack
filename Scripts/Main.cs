@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using HarmonyLib;
+using System.Collections.Generic;
 
 namespace Raft_Hack.Scripts
 {
@@ -18,9 +19,8 @@ namespace Raft_Hack.Scripts
 
 		void Start()
 		{
-			Debug.LogError("Main Initialized");
+			AddScripts();
 
-			this.gameObject.AddComponent<SharkHack>();
 
 			findPlayerCoroutine = FindPlayer();
 			StartCoroutine(findPlayerCoroutine);
@@ -54,6 +54,18 @@ namespace Raft_Hack.Scripts
 ;
 		}
 
+		private void AddScripts()
+		{
+			List<MonoBehaviour> compList = new List<MonoBehaviour>();
+			this.gameObject.AddComponent<SharkHack>();
+			this.gameObject.AddComponent<EntityESP>();
+			this.gameObject.GetComponents<MonoBehaviour>(compList);
+			foreach(Component comp in compList)
+			{
+				Debug.LogError($"{comp.GetType().Name} Initialized");
+			}
+		}
+
 		private void HandleInput()
 		{
 			if (!Input.anyKey || !Input.anyKeyDown) return;
@@ -77,16 +89,16 @@ namespace Raft_Hack.Scripts
 
 		private IEnumerator FindPlayer()
 		{
-			m_Player = FindObjectOfType<Player>();
-			yield return new WaitForSeconds(5f);
-			m_Player = FindObjectOfType<Player>();
-			if(m_Player != null)
+			while (m_Player == null)
 			{
-				StopCoroutine(findPlayerCoroutine);
-				Debug.LogWarning("Player Object Found");
-				GetPlayerStats();
-				PrintPlayerStats();
+				m_Player = FindObjectOfType<Player>();
+				yield return new WaitForSeconds(5f);
+				m_Player = FindObjectOfType<Player>();
 			}
+			StopCoroutine(findPlayerCoroutine);
+			Debug.LogWarning("Player Object Found");
+			GetPlayerStats();
+			PrintPlayerStats();
 		}
 
 		private void GetPlayerStats()
@@ -118,44 +130,4 @@ namespace Raft_Hack.Scripts
 			}
 		}
 	}
-
-	[HarmonyPatch(typeof(AI_StateMachine_Shark))]
-	class State_Machine_SharkPatch
-	{
-		[HarmonyPrefix]
-		[HarmonyPatch("FindAndSetTargetToAttack")]
-		static bool Prefix1()
-		{
-			return false;
-		}
-	}
-
-	//[HarmonyPatch(typeof(AI_State_Attack_Entity_Shark))]
-	//class State_Attack_Entity_SharkPatch
-	//{
-	//	[HarmonyPrefix]
-	//	[HarmonyPatch("TriggerAttackAnimation")]
-	//	static bool Prefix1()
-	//	{
-	//		return false;
-	//	}
-
-	//	[HarmonyPrefix]
-	//	[HarmonyPatch("AttemptAttack")]
-	//	static bool Prefix2()
-	//	{
-	//		return false;
-	//	}
-	//}
-
-	//[HarmonyPatch(typeof(AI_State_Attack_Block_Shark))]
-	//class State_Attack_Block_SharkPatch
-	//{
-	//	[HarmonyPrefix]
-	//	[HarmonyPatch("FindBlockToAttack")]
-	//	static bool Prefix()
-	//	{
-	//		return false;
-	//	}
-	//}
 }
