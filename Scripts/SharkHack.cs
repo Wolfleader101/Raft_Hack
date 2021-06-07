@@ -38,24 +38,7 @@ namespace Raft_Hack.Scripts
 
 		void OnGUI()
 		{
-			MenuMaker.MakeToggle("Friendly Shark", new Vector2(100, 50), new Vector2(20, 70), _friendlyShark, out _friendlyShark);
-
-			//SharkESP();
-		}
-
-		private void SharkESP()
-		{
-			var mainCam = Camera.main;//this.GetComponent<Main>().mainCam;
-
-			if (!m_Shark) return;
-
-			var pos = m_Shark.transform.position;
-			var worldToScreen = mainCam.WorldToScreenPoint(pos);
-			if (worldToScreen.z < 0) return;
-
-			Drawer.DrawText(m_Shark.name, new Vector2(worldToScreen.x, Screen.height - worldToScreen.y + 45), false, 16, Color.green);
-			Drawer.DrawBox(new Vector2(worldToScreen.x, Screen.height - worldToScreen.y), 25, 40, Color.red);
-
+			if (this.gameObject.GetComponent<Main>().showMenu) MenuMaker.MakeToggle("Friendly Shark", new Vector2(100, 20), new Vector2(20, 70), _friendlyShark, out _friendlyShark);
 		}
 
 		private IEnumerator FindShark()

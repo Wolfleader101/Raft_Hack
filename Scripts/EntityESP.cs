@@ -14,6 +14,8 @@ namespace Raft_Hack.Scripts
 		private List<AI_StateMachine_Animal> m_Animals;
 		private IEnumerator findEntitiesCoroutine;
 
+		private bool _showESP = true;
+
 		void Start()
 		{
 			findEntitiesCoroutine = FindEntities();
@@ -22,10 +24,16 @@ namespace Raft_Hack.Scripts
 
 		void OnGUI()
 		{
+			if(this.gameObject.GetComponent<Main>().showMenu) MenuMaker.MakeToggle("Entity ESP", new Vector2(100, 20), new Vector2(20, 100), _showESP, out _showESP);
+			if(_showESP) ESP();
+		}
+
+		private void ESP()
+		{
 			var mainCam = Camera.main;//this.GetComponent<Main>().mainCam;
 
 			if (m_Animals == null) return;
-			foreach(var animal in m_Animals)
+			foreach (var animal in m_Animals)
 			{
 				var pos = animal.transform.position;
 				var worldToScreen = mainCam.WorldToScreenPoint(pos);
@@ -40,7 +48,7 @@ namespace Raft_Hack.Scripts
 
 		private IEnumerator FindEntities()
 		{
-			for(;;)
+			for (; ; )
 			{
 				m_Animals = FindObjectsOfType<AI_StateMachine_Animal>().ToList();
 				yield return new WaitForSeconds(5f);
@@ -57,4 +65,6 @@ namespace Raft_Hack.Scripts
 
 		}
 	}
+
+
 }

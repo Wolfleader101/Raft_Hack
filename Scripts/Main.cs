@@ -15,6 +15,8 @@ namespace Raft_Hack.Scripts
 
 		public Camera mainCam;
 
+		public bool showMenu = true;
+
 		private IEnumerator findPlayerCoroutine;
 
 		void Start()
@@ -49,8 +51,11 @@ namespace Raft_Hack.Scripts
 		{
 			Drawer.DrawText("Raft Trainer", new Vector2(Screen.width / 2, 10), false, 20, FontStyle.Bold, Color.cyan);
 
-			MenuMaker.MakeBox("Raft Trainer", new Vector2(200, 100), new Vector2(10, 10));
-			MenuMaker.MakeButton("Increase HP", new Vector2(80, 20), new Vector2(20, 40), IncreaseHealth)
+
+			MenuMaker.MakeBox("Raft Trainer", new Vector2(200, showMenu ? 250 : 50), new Vector2(10, 10));
+			MenuMaker.MakeToggle("Show/Hide", new Vector2(100, 20), new Vector2(20, 30), showMenu, out showMenu);
+
+			if(showMenu) MenuMaker.MakeButton("Increase HP", new Vector2(80, 20), new Vector2(20, 50), IncreaseHealth)
 ;
 		}
 
